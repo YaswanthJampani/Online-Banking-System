@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Transactions</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 80px 0 0;
+            background-color: rgba(255, 255, 255, 0.5);
+            background-image: url("home.jpg.png");
+            background-size: cover;
+            background-repeat: no-repeat;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+        .content-wrapper {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            background-color: rgba(255, 255, 255, 0.7);
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        table {
+            border-collapse: collapse;
+            width: 100%;
+            margin-top: 20px;
+        }
+        th, td {
+            border: 1px solid #dddddd;
+            text-align: left;
+            padding: 8px;
+        }
+        tr:nth-child(even) {
+            background-color: #f2f2f2;
+        }
+        form {
+            margin-bottom: 20px;
+        }
+        form label {
+            margin-right: 10px;
+        }
+        form input[type="text"] {
+            padding: 5px;
+        }
+        form input[type="submit"] {
+            padding: 5px 10px;
+            cursor: pointer;
+        }
+        #searchInput {
+            display: none;
+        }
+        .redirect-button {
+            text-align: center;
+            margin-top: 20px;
+        }
+        .redirect-button button {
+            padding: 10px 20px;
+            background-color: #45a049;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <div class="content-wrapper">
+        <h2>Transactions</h2>
+        <form id="filterForm">
+            <label for="userId">Filter by User ID:</label>
+            <select id="userId" name="userId">
+                <option value="">All</option>
+                <!-- Add more user options dynamically if needed -->
+            </select><br><br>
+            
+            <input type="radio" id="all" name="transactionType" value="all" checked>
+            <label for="all">All</label>
+            
+            <input type="radio" id="deposit" name="transactionType" value="deposit">
+            <label for="deposit">Deposit</label>
+            
+            <input type="radio" id="withdrawal" name="transactionType" value="withdrawal">
+            <label for="withdrawal">Withdrawal</label>
+            
+            <input type="radio" id="date" name="transactionType" value="date">
+            <label for="date">Date</label>
+            
+            <input type="text" id="searchInput" name="searchInput" placeholder="Enter Date (YYYY-MM-DD)"><br>
+            
+            <input type="submit" value="Filter">
+        </form>
+        
+        <table id="transactionTable">
+            <thead>
+                <tr>
+                    <th>User ID</th>
+                    <th>Transaction Date</th>
+                    <th>Transaction Type</th>
+                    <th>Amount</th>
+                </tr>
+            </thead>
+            <tbody>
+                <!-- Data rows will be inserted here -->
+            </tbody>
+        </table>
+        
+        <div class="redirect-button">
+            <button onclick="location.href='admin_home.html';">Go to Home Page</button>
+        </div>
+    </div>
+
+    <script>
+        document.getElementById("date").addEventListener("click", function() {
+            document.getElementById("searchInput").style.display = "inline-block";
+        });
+        document.getElementById("all").addEventListener("click", function() {
+            document.getElementById("searchInput").style.display = "none";
+        });
+        document.getElementById("deposit").addEventListener("click", function() {
+            document.getElementById("searchInput").style.display = "none";
+        });
+        document.getElementById("withdrawal").addEventListener("click", function() {
+            document.getElementById("searchInput").style.display = "none";
+        });
+
+        document.getElementById('filterForm').addEventListener('submit', async (event) => {
+            event.preventDefault();
+
+            const userId = document.getElementById('userId').value;
+            const transactionType = document.querySelector('input[name="transactionType"]:checked').value;
+            const searchInput = document.getElementById('searchInput').value;
+
+            // Construct query parameters for fetching transactions
+            const query = new URLSearchParams({
+                userId,
+                transactionType,
+                searchInput
+            }).toString();
+
+            // Fetch filtered transactions
+            const response = await fetch(`/get_transactions?${query}`);
+            const transactions = await response.json();
+
+            const tableBody = document.getElementById('transactionTable').querySelector('tbody');
+            tableBody.innerHTML = ''; // Clear existing rows
+
+            transactions.forEach((txn) => {
+                const row = tableBody.insertRow();
+                row.innerHTML = `
+                    <td>${txn.userId || 'N/A'}</td>
+                    <td>${txn.date ? new Date(txn.date).toLocaleString() : 'Invalid Date'}</td>
+                    <td>${txn.transactionType || 'N/A'}</td>
+                    <td>${txn.amount || 'N/A'}</td>
+                `;
+            });
+        });
+
+        // Fetch and display all transactions when page loads
+        window.addEventListener('load', async () => {
+            const response = await fetch('/get_transactions');
+            const transactions = await response.json();
+
+            const tableBody = document.getElementById('transactionTable').querySelector('tbody');
+            tableBody.innerHTML = ''; // Clear existing rows
+
+            transactions.forEach((txn) => {
+                const row = tableBody.insertRow();
+                row.innerHTML = `
+                    <td>${txn.userId || 'N/A'}</td>
+                    <td>${txn.date ? new Date(txn.date).toLocaleString() : 'Invalid Date'}</td>
+                    <td>${txn.transactionType || 'N/A'}</td>
+                    <td>${txn.amount || 'N/A'}</td>
+                `;
+            });
+        });
+    </script>
+</body>
+</html>

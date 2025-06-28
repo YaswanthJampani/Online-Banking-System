@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Create Account</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+            background-image: url("create.jpg"); /* Update the path to the image */
+            background-size: cover;
+            background-position: center;
+            height: 100vh; /* Ensures the background covers the entire viewport height */
+            background-repeat: no-repeat;
+        }
+        .container {
+            width: 50%;
+            margin: 50px auto;
+            background-color: rgba(255, 255, 255, 0.8); /* Transparent white background for the container */
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        h2 {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        label {
+            display: block;
+            margin-bottom: 5px;
+        }
+        input[type="text"], input[type="password"], input[type="tel"], input[type="date"], input[type="number"], select {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 10px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            box-sizing: border-box;
+        }
+        input[type="submit"] {
+            background-color: #333;
+            color: #fff;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            text-decoration: none; /* Remove default button underline */
+            display: inline-block; /* Ensure proper rendering */
+        }
+        input[type="submit"]:hover {
+            background-color: #555;
+        }
+        .referral-link {
+            text-align: center;
+            margin-top: 20px;
+        }
+        .referral-link a {
+            color: #007bff;
+            text-decoration: none;
+        }
+        .referral-link a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>Create Account</h2>
+        <form action="/submit_account" method="post"> <!-- Update form action -->
+            <label for="fullname">Full Name:</label>
+            <input type="text" id="fullname" name="fullname" required>
+            <label for="userid">User Id:</label>
+            <input type="text" id="userid" name="userid" required> <!-- Fix ID to match -->
+            <label for="phone">Phone Number:</label>
+            <input type="tel" id="phone" name="phone" required>
+            <label for="password">Password:</label>
+            <input type="password" id="password" name="password" required>
+            <label for="accountType">Account Type:</label>
+            <input type="radio" id="savings" name="accountType" value="savings" required><label for="savings">Savings</label>
+            <input type="radio" id="current" name="accountType" value="current" required><label for="current">Current</label>
+            <label for="account_number">Account Number:</label>
+            <input type="text" id="account_number" name="account_number" required>
+            <label for="branch">Branch:</label>
+            <input type="text" id="branch" name="branch" required>
+            <label for="aadhar">Aadhar Number:</label>
+            <input type="text" id="aadhar" name="aadhar" required>
+            <label for="age">Age:</label>
+            <input type="number" id="age" name="age" min="18" required>
+            <label for="marital_status">Marital Status:</label>
+            <select id="marital_status" name="marital_status" required>
+                <option value="single">Single</option>
+                <option value="married">Married</option>
+                <option value="divorced">Divorced</option>
+                <option value="widowed">Widowed</option>
+            </select>
+            <label for="gender">Gender:</label>
+            <input type="radio" id="male" name="gender" value="male" required><label for="male">Male</label>
+            <input type="radio" id="female" name="gender" value="female" required><label for="female">Female</label>
+            <label for="dob">Date of Birth:</label>
+            <input type="date" id="dob" name="dob" required>
+            <label for="pan">PAN Card Number:</label>
+            <input type="text" id="pan" name="pan" required>
+            <label for="initial_balance">Initial Balance:</label>
+            <input type="number" id="initial_balance" name="initial_balance" min="0" required>
+            <input type="submit" value="Create Account">
+        </form>
+        <div class="referral-link">
+            <p>Already have an account? <a href="login.html">Login here</a>.</p>
+        </div>
+    </div>
+</body>
+</html>

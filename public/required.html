@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Request Statement</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: rgba(255, 255, 255, 0.5); /* Transparent background */
+            background-image: url("request.jpg"); /* Replace with your background image */
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            background-color: #000000;
+            height: 100vh;
+            transform: translate(0,25%);
+        }
+        .container {
+            max-width: 800px;
+            margin: 20px auto;
+            padding: 20px;
+            background-color: rgba(255, 255, 255, 0.8); /* Semi-transparent white background */
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        h1, h2 {
+            color: #333;
+            text-align: center;
+        }
+        .form-container {
+            padding: 20px;
+            border-radius: 8px;
+            background-color: rgba(255, 255, 255, 0.9); /* Semi-transparent white background */
+            box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+        }
+        label {
+            display: block;
+            margin-bottom: 10px;
+            font-weight: bold;
+        }
+        input[type="text"] {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 20px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            box-sizing: border-box;
+        }
+        button {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 4px;
+            background-color: #007bff;
+            color: #fff;
+            cursor: pointer;
+            font-size: 16px;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Request Statement</h1>
+        <div class="form-container">
+            <form id="dateForm">
+                <label for="startDate">Start Date:</label>
+                <input type="text" id="startDate" name="startDate" placeholder="YYYY-MM-DD" required>
+                <label for="endDate">End Date:</label>
+                <input type="text" id="endDate" name="endDate" placeholder="YYYY-MM-DD" required>
+                <button type="submit">Request Statement</button>
+            </form>
+        </div>
+        <div class="results" id="results" style="display:none;">
+            <h2>Transaction History</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Transaction Type</th>
+                        <th>Amount</th>
+                        <th>Date</th>
+                    </tr>
+                </thead>
+                <tbody id="transactionBody">
+                    <!-- Transaction data will be inserted here -->
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <script>
+        document.getElementById('dateForm').addEventListener('submit', async function(event) {
+            event.preventDefault(); // Prevent default form submission
+
+            const startDate = document.getElementById('startDate').value;
+            const endDate = document.getElementById('endDate').value;
+
+            try {
+                const response = await fetch('/transaction_history2', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ startDate, endDate }),
+                });
+
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+
+                const transactions = await response.json();
+                displayTransactions(transactions);
+            } catch (error) {
+                console.error('Error fetching transaction history:', error);
+                alert('Failed to fetch transaction history. Please try again.');
+            }
+        });
+
+        function displayTransactions(transactions) {
+            const transactionBody = document.getElementById('transactionBody');
+            transactionBody.innerHTML = ''; // Clear previous results
+            transactions.forEach(transaction => {
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td>${transaction.transactionType}</td>
+                    <td>₹${transaction.amount.toFixed(2)}</td>
+                    <td>${new Date(transaction.date).toLocaleDateString()}</td>
+                `;
+                transactionBody.appendChild(row);
+            });
+            document.getElementById('results').style.display = transactions.length > 0 ? 'block' : 'none';
+        }
+    </script>
+</body>
+</html>
+    

@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Universal Banking Admin</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: rgba(255, 255, 255, 0.5); /* Transparent background */
+            background-image: url("home.jpg.png"); /* Replace "home.jpg.png" with your actual image file */
+            background-size: cover;
+            background-repeat: no-repeat;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+        .content-wrapper {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        header {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        .container {
+            max-width: 1200px; /* Increased width */
+            padding: 20px;
+            background-color: rgba(255, 255, 255, 0.7); /* Semi-transparent white background */
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        .section {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        .section h2 {
+            margin-top: 0;
+        }
+        .icon-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        .icon {
+            padding: 20px;
+            border-radius: 8px;
+            background-color: #f9f9f9;
+            margin: 0 10px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+        .icon:hover {
+            background-color: #e0e0e0;
+        }
+        .icon img {
+            width: 200px; /* Increased size */
+            height: 200px; /* Increased size */
+            border-radius: 50%;
+        }
+    </style>
+</head>
+<body>
+    <div class="content-wrapper">
+        <header>
+            <h1>Dominion Banking Admin</h1>
+        </header>
+        <div class="container">
+            <div class="section">
+                <h2>User Management</h2>
+                <div class="icon-container">
+                    <div class="icon" onclick="location.href='user.html';">
+                        <img src="user_management_icon.jpg" alt="User Management">
+                    </div>
+                    <div class="icon" onclick="location.href='trans1.html';">
+                        <img src="transaction_monitoring_icon.png" alt="Transaction Monitoring">
+                    </div>
+                    <div class="icon" onclick="location.href='update.html';">
+                        <img src="update_icon.jpeg" alt="Update details">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

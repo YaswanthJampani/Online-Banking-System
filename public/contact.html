@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contact Us</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: rgba(255, 255, 255, 0.5); /* Transparent background */
+            background-image: url("contact.jpg"); /* Replace "Designer2.png" with your actual image file */
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            height: 100vh;
+            transform: translate(0,10%);
+            background-color: black;
+        }
+        .container {
+            max-width: 800px;
+            margin: 20px auto;
+            padding: 20px;
+            background-color: rgba(255, 255, 255, 0.8); /* Semi-transparent white background */
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        h1, h2, h3 {
+            color: #333;
+        }
+        p {
+            line-height: 1.6;
+        }
+        .section {
+            margin-bottom: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Contact Us</h1>
+        <div class="section">
+            <h2>Contact Information</h2>
+            <p>If you have any questions or feedback, please don't hesitate to contact us:</p>
+            <ul>
+                <li>Email: info@dominionbanking.com</li>
+                <li>Phone: 1-800-123-4567</li>
+                <li>Address: 123 Main Street, Moscow, Russia</li>
+            </ul>
+        </div>
+        <div class="section">
+            <h2>Send us a Message</h2>
+            <form action="#" method="post">
+                <table border="0">
+                    <tr>
+                        <th><label for="name">Name:</label></th>
+                        <td> <input type="text" id="name" name="name" required><br></td>
+                    </tr>
+                    <tr>
+                        <th><label for="email">Email:</label></th>
+                        <td><input type="email" id="email" name="email" required><br></td>
+                    </tr>
+                    <tr>
+                        <th> <label for="message">Message:</label></th>
+                        <td><textarea id="message" name="message" rows="15" cols="50" required></textarea><br></td>
+                    </tr>
+                    <tr>
+                        <th></th>
+                        <td><input type="submit" value="Send Message"></td>
+                    </tr>
+                </table>
+            </form>
+        </div>
+    </div>
+</body>
+</html>

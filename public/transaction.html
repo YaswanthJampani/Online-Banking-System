@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Transaction History</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: rgba(255, 255, 255, 0.5); /* Transparent background */
+            background-image: url("transaction.jpg"); /* Replace with your actual image file */
+            background-size: cover;
+            background-position: center;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+        .container {
+            max-width: 800px;
+            padding: 20px;
+            background-color: rgba(255, 255, 255, 0.8); /* Semi-transparent white background */
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            text-align: center;
+        }
+        h1 {
+            margin-bottom: 20px;
+            color: #333;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 20px;
+        }
+        th, td {
+            padding: 8px;
+            border: 1px solid #ddd;
+            text-align: left;
+        }
+        th {
+            background-color: #f2f2f2;
+        }
+        a {
+            color: #007bff;
+            text-decoration: none;
+        }
+        a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Transaction History</h1>
+        <table>
+            <thead>
+                <tr>
+                    <th>Date</th>
+                    <th>Description</th>
+                    <th>Amount</th>
+                </tr>
+            </thead>
+            <tbody id="transaction-table-body">
+                <!-- Transactions will be populated here -->
+            </tbody>
+        </table>
+        <a href="home.html">Back to Home</a>
+    </div>
+
+    <script>
+        async function fetchTransactionHistory() {
+            try {
+                const response = await fetch('/transaction_history');
+                const transactions = await response.json();
+
+                const tableBody = document.getElementById('transaction-table-body');
+                tableBody.innerHTML = '';
+
+                if (transactions.length === 0) {
+                    tableBody.innerHTML = '<tr><td colspan="3">No recent transactions available.</td></tr>';
+                } else {
+                    transactions.forEach(transaction => {
+                        const row = document.createElement('tr');
+                        const date = new Date(transaction.date).toLocaleString();
+
+                        row.innerHTML = `
+                            <td>${date}</td>
+                            <td>${transaction.transactionType}</td>
+                            <td>₹${transaction.amount.toFixed(2)}</td>
+                        `;
+                        tableBody.appendChild(row);
+                    });
+                }
+            } catch (error) {
+                console.error('Error fetching transaction history:', error);
+            }
+        }
+
+        fetchTransactionHistory();
+    </script>
+</body>
+</html>

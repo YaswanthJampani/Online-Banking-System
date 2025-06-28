@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Update Account Details</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: rgba(255, 255, 255, 0.5);
+            background-image: url("home.jpg.png");
+            background-size: cover;
+            background-repeat: no-repeat;
+            text-align: center;
+        }
+        #updateForm {
+            display: inline-block;
+            margin-top: 20px;
+        }
+        form {
+            display: inline-block;
+            margin-top: 20px;
+            text-align: left;
+            background-color: rgba(255, 255, 255, 0.7);
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        table {
+            margin: 0 auto;
+        }
+        table tr td {
+            padding: 5px;
+        }
+    </style>
+</head>
+<body>
+    <h2>Update Account Details</h2>
+    <form action="javascript:void(0);" id="updateForm" onsubmit="fetchUserDetails();">
+        Enter User ID to update: <input type="text" name="userId" id="userId" required>
+        <input type="submit" value="Search">
+    </form>
+    <br>
+
+    <div id="userDetails" style="display: none;">
+        <form action="javascript:void(0);" method="post" id="updateUserForm" onsubmit="updateUserDetails();">
+            <input type="hidden" name="userId" id="hiddenUserId"><br>
+            <table>
+                <tr>
+                    <td>Full Name:</td>
+                    <td><input type="text" name="fullName" id="fullName" required></td>
+                </tr>
+                <tr>
+                    <td>Phone:</td>
+                    <td><input type="text" name="phone" id="phone" required></td>
+                </tr>
+                <tr>
+                    <td>Password:</td>
+                    <td><input type="password" name="password" id="password" required></td>
+                </tr>
+                <tr>
+                    <td>Account Type:</td>
+                    <td><input type="text" name="accountType" id="accountType" required></td>
+                </tr>
+                <tr>
+                    <td>Aadhar:</td>
+                    <td><input type="text" name="aadhar" id="aadhar" required></td>
+                </tr>
+                <tr>
+                    <td>Age:</td>
+                    <td><input type="number" name="age" id="age" required></td>
+                </tr>
+                <tr>
+                    <td>Marital Status:</td>
+                    <td><input type="text" name="maritalStatus" id="maritalStatus" required></td>
+                </tr>
+                <tr>
+                    <td>Gender:</td>
+                    <td><input type="text" name="gender" id="gender" required></td>
+                </tr>
+                <tr>
+                    <td>PAN:</td>
+                    <td><input type="text" name="pan" id="pan" required></td>
+                </tr>
+                <tr>
+                    <td>Branch:</td>
+                    <td><input type="text" name="branch" id="branch" required></td>
+                </tr>
+            </table>
+            <br>
+            <input type="submit" value="Update">
+        </form>
+    </div>
+
+    <script>
+        async function fetchUserDetails() {
+            const userId = document.getElementById('userId').value;
+            if (!userId) {
+                alert("Please enter a User ID");
+                return;
+            }
+
+            try {
+                const response = await fetch(`http://localhost:3000/api/getUserDetails?userId=${userId}`);
+                
+                if (!response.ok) {
+                    throw new Error("User not found");
+                }
+
+                const user = await response.json();
+                document.getElementById('hiddenUserId').value = user.userId;
+                document.getElementById('fullName').value = user.fullName;
+                document.getElementById('phone').value = user.phone;
+                document.getElementById('password').value = user.password;
+                document.getElementById('accountType').value = user.accountType;
+                document.getElementById('aadhar').value = user.aadhar;
+                document.getElementById('age').value = user.age;
+                document.getElementById('maritalStatus').value = user.maritalStatus;
+                document.getElementById('gender').value = user.gender;
+                document.getElementById('pan').value = user.pan;
+                document.getElementById('branch').value = user.branch;
+
+                document.getElementById('userDetails').style.display = 'block';
+            } catch (error) {
+                alert(error.message);
+            }
+        }
+
+        async function updateUserDetails() {
+            const userId = document.getElementById('hiddenUserId').value;
+            const userData = {
+                userId,
+                fullName: document.getElementById('fullName').value,
+                phone: document.getElementById('phone').value,
+                password: document.getElementById('password').value,
+                accountType: document.getElementById('accountType').value,
+                aadhar: document.getElementById('aadhar').value,
+                age: document.getElementById('age').value,
+                maritalStatus: document.getElementById('maritalStatus').value,
+                gender: document.getElementById('gender').value,
+                pan: document.getElementById('pan').value,
+                branch: document.getElementById('branch').value
+            };
+
+            try {
+                const response = await fetch('http://localhost:3000/api/updateUserDetails', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(userData)
+                });
+
+                const result = await response.json();
+                if (response.ok) {
+                    alert(result.message);
+                    // Optionally redirect to another page or reset the form
+                } else {
+                    alert(result.message);
+                }
+            } catch (error) {
+                alert("Error updating user details: " + error.message);
+            }
+        }
+    </script>
+</body>
+</html>

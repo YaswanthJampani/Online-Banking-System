@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Banking Home</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: rgba(255, 255, 255, 0.5);
+            background-image: url("home.jpg"); /* Replace with your actual image file */
+            background-size: cover;
+            background-repeat: no-repeat;
+            height: 100vh;
+        }
+        .container {
+            max-width: 800px;
+            margin: 100px auto 20px;
+            padding: 20px;
+            background-color: rgba(255, 255, 255, 0.7);
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        h1, h2, h3 {
+            color: #000000;
+        }
+        p {
+            line-height: 1.6;
+        }
+        .section {
+            margin-bottom: 20px;
+        }
+        .balance {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        .balance p {
+            font-size: 24px;
+            font-weight: bold;
+        }
+        .dropdown {
+            position: absolute;
+            top: 20px;
+            right: 20px; /* Positioning the dropdown in the top right corner */
+        }
+        .dropdown-content {
+            display: none;
+            position: absolute;
+            background-color: #f9f9f9;
+            min-width: 160px;
+            box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+            z-index: 1;
+            border-radius: 10px;
+            right: 0;
+        }
+        .dropdown:hover .dropdown-content {
+            display: block;
+        }
+        .dropdown-content a {
+            color: black;
+            padding: 12px 16px;
+            text-decoration: none;
+            display: block;
+        }
+        .dropdown-content a:hover {
+            background-color: #ffffff;
+        }
+        .button-container {
+            text-align: center;
+        }
+        .button-container button {
+            padding: 10px;
+            margin: 0 10px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            background-color: transparent;
+            background-repeat: no-repeat;
+            background-position: center;
+            transition: background-color 0.3s ease;
+            display: inline-block;
+        }
+        .button-container button:hover {
+            background-color: #45a049;
+        }
+        .button-container button img {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+        }
+        .button-container button span {
+            display: block;
+            font-size: 16px;
+            margin-top: 5px;
+        }
+        .welcome-text {
+            text-align: center;
+            font-size: 35px;
+            font-weight: bold;
+            color: black;
+            margin-bottom: 20px;
+            font-family: 'Lucida Sans', Geneva, Verdana, sans-serif;
+        }
+        .quick-links {
+            text-align: center;
+            margin-top: 20px;
+        }
+        .quick-links button {
+            padding: 10px 20px;
+            margin: 0 10px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+        .quick-links button:hover {
+            background-color: #45a049;
+        }
+        .settings-btn {
+            font-size: 32px;
+            padding: 5px 5px;
+            height: 60px;
+            background-color: white;
+            border-radius: 50px;
+        }
+        tr {
+            height: 40px;
+        }
+        th, td {
+            width: 50%;
+            padding: 10px;
+        }
+        th {
+            text-align: right;
+        }
+        #logout {
+            color: red;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1 class="welcome-text">Welcome to Dominion Banking</h1>
+        <p style="text-align: right; margin-top: 10px; color: black;" id="loggedInUser"></p>
+        <center>
+            <div class="balance">
+                <p>Your Account Balance: ₹<span id="accountBalance">Loading...</span></p>
+            </div>
+            <div class="account-details">
+                <p>Account Status: Active</p>
+                <p>Account Type: <span id="accountType">Loading...</span></p>
+                <p>Account Number: <span id="accountNumber">Loading...</span></p>
+                <p>Branch: <span id="branch">Loading...</span> Branch</p>
+            </div>
+        </center>
+
+        <div class="dropdown">
+            <button class="settings-btn">☰</button>
+            <div class="dropdown-content">
+                <a href="accountdetails.html">Account Info</a>
+                <a href="changephone.html">Change Phone Number</a>
+                <a href="changepassword.html">Change Password</a>
+                <a href="required.html">Request Statement</a>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>Make Transaction</h2>
+            <div class="button-container">
+                <button onclick="location.href='withdraw.html';" style="background-image: url('withdraw_icon.png'); background-size: cover;"><img src="withdraw_icon.jpg" alt="Withdraw"><span>Withdraw</span></button>
+                <button onclick="location.href='deposit.html';" style="background-image: url('deposit_icon.png'); background-size: cover;"><img src="deposit_icon.jpg" alt="Deposit"><span>Deposit</span></button>
+                <button onclick="location.href='transaction.html';" style="background-image: url('Transaction.png'); background-size: cover;"><img src="transaction_history_icon.png" alt="Transaction History"><span>Transaction History</span></button>
+            </div>
+        </div>
+    </div>
+
+    <div class="quick-links">
+        <button onclick="location.href='about.html'">About Us</button>
+        <button onclick="location.href='contact.html'">Contact Us</button>
+        <button onclick="location.href='/login.html'">Logout</button> <!-- Ensure this points to your logout route -->
+    </div>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", async () => {
+            // Fetch account data
+            try {
+                const response = await fetch('/account_details'); // Adjusted the API endpoint to match your existing route
+                if (!response.ok) {
+                    throw new Error('Account not found');
+                }
+                
+                const data = await response.json();
+                
+                document.getElementById('loggedInUser').innerText = `Logged in as: ${data.fullname}`;
+                document.getElementById('accountBalance').innerText = data.initial_balance; // Updated to use initial_balance
+                document.getElementById('accountType').innerText = data.accountType;
+                document.getElementById('accountNumber').innerText = data.accountNumber;
+                document.getElementById('branch').innerText = data.branch;
+            } catch (error) {
+                console.error('Error fetching account data:', error);
+                alert('Failed to retrieve account information. Please try again later.'); // Improved error message
+            }
+        });
+    </script>
+</body>
+</html>
